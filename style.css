@@ -1981,6 +1981,26 @@ nav.main-nav ul li a.active::after {
   justify-content: center;
 }
 
+.color-note {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.color-note strong {
+  color: #333;
+}
+
+.color-option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.color-option:active {
+  transform: scale(0.95);
+}
+
 .cart-item-color-wrapper {
     margin-top: 4px;
 }

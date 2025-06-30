@@ -1,15 +1,30 @@
 // cart.js - Функции для работы с корзиной товаров
 // Обновлено: 21.05.2025
 
-// === Словарь цветов по RAL и другие значения ===
+// === Словарь цветов по RAL ===
 function getColorHex(code) {
     const colors = {
-        '9016': '#8B0000', // RAL 9016 — Тёмно-красный
-        '5012': '#4682B4', // RAL 5012 — Стальной синий
-        '6024': '#2E8B57', // RAL 6024 — Зелёный морской
-        'custom': 'linear-gradient(45deg, #ffffff 25%, #e0e0e0 25%, #e0e0e0 50%, #ffffff 50%, #ffffff 75%, #e0e0e0 75%)'
+        '9016': '#F6F6F6', // RAL 9016 — Белый транспортный
+        '7035': '#D7D7D7', // RAL 7035 — Серый светлый  
+        '6005': '#2F4F2F', // RAL 6005 — Зелёный мох
+        '5012': '#3E5F8A', // RAL 5012 — Синий светлый
+        '3000': '#AF2B1E', // RAL 3000 — Красный огненный
+        'custom': '#f0f0f0' // Для заказных цветов
     };
     return colors[code] || '#cccccc'; // Серый по умолчанию
+}
+
+// === Получение названия цвета ===
+function getColorName(code) {
+    const names = {
+        '9016': 'Белый транспортный',
+        '7035': 'Серый светлый',
+        '6005': 'Зелёный мох', 
+        '5012': 'Синий светлый',
+        '3000': 'Красный огненный',
+        'custom': 'На заказ'
+    };
+    return names[code] || 'Стандартный';
 }
 
 function getCartFromStorage() {
@@ -73,24 +88,23 @@ function initCartPage() {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
 
-        // Цвет: если не указан, то показываем как "без цвета"
-        const color = item.color || 'none';
+        // Цвет: если не указан, то показываем стандартный
+        const color = item.color || '9016';
         const isCustom = color === 'custom';
-
-        // Получаем HEX-цвет или градиент для "на заказ"
         const bgColor = getColorHex(color);
+        const colorName = getColorName(color);
 
         // HTML для отображения цвета и текста
         const colorDisplay = isCustom 
             ? `
-              <div class="cart-item-color-label" style="margin-right: 8px;">
-                На заказ
+              <div class="cart-item-color-label" style="margin-right: 8px; background: linear-gradient(45deg, #ffffff 25%, #e0e0e0 25%, #e0e0e0 50%, #ffffff 50%, #ffffff 75%, #e0e0e0 75%); padding: 2px 8px; border: 1px dashed #999; border-radius: 3px; font-size: 0.8rem;">
+                ${colorName}
               </div>
             `
             : `
-              <div class="cart-item-color" style="background-color: ${bgColor}; margin-right: 8px;" title="RAL ${color}"></div>
+              <div class="cart-item-color" style="background-color: ${bgColor}; border: 1px solid #ddd;" title="${colorName} (RAL ${color})"></div>
               <div class="cart-item-color-name">
-                RAL ${color}
+                ${colorName}
               </div>
             `;
 
