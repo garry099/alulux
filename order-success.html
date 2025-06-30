@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Заказ оформлен - AluLuxe</title>
+  <meta name="description" content="Спасибо за ваш заказ! Мы свяжемся с вами в ближайшее время." />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://unpkg.com/aos @next/dist/aos.css" rel="stylesheet" />
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main class="section">
+    <section class="order-success-section section">
+      <div class="order-success-content">
+        <h2 class="section-title" style="text-align:center;">Спасибо за ваш заказ!</h2>
+        <p class="section-description" style="text-align:center; max-width:500px; margin:auto;">
+          Мы получили ваш заказ и свяжемся с вами в ближайшее время для уточнения деталей.
+        </p>
+
+        <div style="text-align:center; margin-top:40px;">
+          <a href="index.html" class="btn btn-primary">Вернуться на главную</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script src="global.js"></script>
+  <script>
+    async function loadHeaderFooter() {
+      try {
+        const h = await fetch('header.html').then(r => r.text());
+        document.getElementById('header-container').innerHTML = h;
+        if (window.initHeader) initHeader();
+        if (window.updateCartIcon) updateCartIcon();
+
+        const f = await fetch('footer.html').then(r => r.text());
+        document.getElementById('footer-container').innerHTML = f;
+      } catch (e) {
+        console.error('Ошибка загрузки хедера/футера:', e);
+      }
+    }
+
+    // Очистка корзины
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('cart');
+          if (window.updateCartIcon) window.updateCartIcon();
+        }
+
+    // Загружаем хедер и футер
+    loadHeaderFooter();
+  </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Комплект мебели “Гармония” — AluLuxe</title>
+  <meta name="description" content="Уютный комплект садовой мебели: трёхместный диван ‘Гармония’ из алюминия с влагозащитными подушками, большой стол и два стула. Идеален для вашего сада или террасы." />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  
+</head>
+<body>
+
+  <div id="header-container"></div>
+
+  <main>
+    <section class="breadcrumbs">
+      <a href="index.html">Главная</a> <span>&rsaquo;</span>
+      <a href="index.html#catalog">Каталог</a> <span>&rsaquo;</span>
+      <span>Комплект мебели “Гармония”</span>
+    </section>
+
+    <section class="product-detail-section section">
+      <div class="product-gallery" data-aos="fade-right">
+        <div class="main-image">
+          <img id="current-image" src="img/2.jpg" alt="Комплект мебели Гармония" onclick="openLightbox(currentIndex)" />
+        </div>
+        <div class="thumbnail-gallery">
+          <img class="thumb active" src="img/2.jpg"    data-index="0" alt="Гармония 1" />
+          <img class="thumb"        src="img/2-1.jpg" data-index="1" alt="Гармония 2" />
+          <img class="thumb"        src="img/2-2.jpg" data-index="2" alt="Гармония 3" />
+          <img class="thumb"        src="img/2-3.jpg" data-index="3" alt="Гармония 4" />
+        </div>
+      </div>
+
+      <div class="product-info-details" data-aos="fade-left">
+        <h1 class="product-title-page">Комплект мебели “Гармония”</h1>
+        <p class="product-short-description">Уютный комплект садовой мебели трёхместный диван ‘Гармония’ из алюминия с влагозащитными подушками, большой стол и два стула. Идеален для вашего сада или террасы.</p>
+        <p class="product-price-page">159&nbsp;500&nbsp;руб.</p>
+
+<!-- === Блок выбора цвета по RAL === -->
+<div class="product-color-options">
+  <h4>Выберите цвет</h4>
+  <div class="color-picker">
+    <div class="color-option selected" data-color="9016" style="background-color: white;">
+      <span class="color-label">RAL 9016</span>
+    </div>
+    <div class="color-option" data-color="5012" style="background-color: #4682B4;">
+      <span class="color-label">RAL 5012</span>
+    </div>
+    <div class="color-option" data-color="6024" style="background-color: #2E8B57;">
+      <span class="color-label">RAL 6024</span>
+    </div>
+    <div class="color-option custom" data-color="custom">
+      <span class="color-label">На заказ</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // === Обработчик выбора цвета по RAL ===
+  document.addEventListener('DOMContentLoaded', function () {
+    const colorOptions = document.querySelectorAll('.color-option');
+    const addToCartBtn = document.querySelector('.btn-tocart');
+
+    if (colorOptions.length && addToCartBtn) {
+      let selectedColor = null;
+
+      // Установить начальный цвет
+      const defaultColorOption = colorOptions[0];
+      selectedColor = defaultColorOption.getAttribute('data-color');
+      defaultColorOption.classList.add('selected');
+      addToCartBtn.setAttribute('data-product-color', selectedColor);
+
+      // Обработчики кликов
+      colorOptions.forEach(option => {
+        option.addEventListener('click', function () {
+          colorOptions.forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedColor = this.getAttribute('data-color');
+          addToCartBtn.setAttribute('data-product-color', selectedColor);
+        });
+      });
+    }
+  });
+</script>
+
+        <div class="product-order-button">
+          <button class="btn btn-primary btn-tocart"
+                  data-product-id="prod006"
+                  data-product-name="Комплект мебели Гармония"
+                  data-product-price="159500"
+                  data-product-image="img/6.jpg">
+            Добавить в корзину
+          </button>
+        </div>
+
+        <div class="product-full-description">
+          <h4>Описание товара</h4>
+          <p>Комплект мебели для сада “Гармония” выполнен из прочного алюминия толщиной 2 мм и оснащён влагозащитными подушками, устойчивыми к УФ и влаге. Идеален для загородных патио и террас.</p>
+        </div>
+
+        <div class="product-characteristics">
+          <h4>Характеристики</h4>
+          <ul>
+            <li><strong>Каркас:</strong><span>Алюминий 2 мм</span></li>
+            <li><strong>Подушки:</strong><span>Влагозащитная ткань</span></li>
+            <li><strong>Габариты (Ш×Г×В):</strong><span>1×1×1 см</span></li>
+            <li><strong>Упаковка (Ш×Г×В):</strong><span>1×1×1 см</span></li>
+            <li><strong>Цвет каркаса:</strong><span>По каталогу RAL</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <!-- Lightbox -->
+  <div class="lightbox-overlay" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img class="lightbox-image" src="" alt="Фото товара" />
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="global.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script src="cart.js"></script>
+  <script>
+    let images = ['img/6.jpg','img/6-1.jpg','img/6-2.jpg','img/6-3.jpg'];
+    let currentIndex = 0;
+
+    async function filterImages() {
+      const exists = await Promise.all(images.map(src =>
+        new Promise(res => {
+          const img = new Image();
+          img.onload  = () => res(true);
+          img.onerror = () => res(false);
+          img.src = src;
+        })
+      ));
+      images = images.filter((_, i) => exists[i]);
+      document.querySelectorAll('.thumbnail-gallery .thumb').forEach(thumb => {
+        const idx = +thumb.dataset.index;
+        if (idx >= images.length) thumb.remove();
+      });
+      document.querySelectorAll('.thumbnail-gallery .thumb').forEach((thumb, i) => {
+        thumb.dataset.index = i;
+        thumb.src = images[i];
+        thumb.classList.toggle('active', i === 0);
+      });
+    }
+
+    function updateMain() {
+      document.getElementById('current-image').src = images[currentIndex];
+      document.querySelectorAll('.thumbnail-gallery .thumb').forEach((t,i) =>
+        t.classList.toggle('active', i === currentIndex)
+      );
+    }
+
+    function openLightbox(idx) {
+      currentIndex = idx;
+      document.querySelector('.lightbox-image').src = images[currentIndex];
+      document.querySelector('.lightbox-overlay').style.display = 'flex';
+      document.body.classList.add('lightbox-open');
+    }
+    function closeLightbox() {
+      document.querySelector('.lightbox-overlay').style.display = 'none';
+      document.body.classList.remove('lightbox-open');
+    }
+    function navigateLightbox(dir) {
+      currentIndex = (currentIndex + dir + images.length) % images.length;
+      document.querySelector('.lightbox-image').src = images[currentIndex];
+      updateMain();
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await filterImages();
+      updateMain();
+
+      document.querySelectorAll('.thumbnail-gallery .thumb').forEach(thumb =>
+        thumb.addEventListener('click', () => {
+          currentIndex = +thumb.dataset.index;
+          updateMain();
+        })
+      );
+      document.addEventListener('keydown', e => {
+        if (document.querySelector('.lightbox-overlay').style.display !== 'flex') return;
+        if (e.key === 'ArrowRight') navigateLightbox(1);
+        if (e.key === 'ArrowLeft')  navigateLightbox(-1);
+        if (e.key === 'Escape')     closeLightbox();
+      });
+      let startX = 0;
+      const ov = document.querySelector('.lightbox-overlay');
+      ov.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+      ov.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - startX;
+        if (dx > 50)  navigateLightbox(-1);
+        if (dx < -50) navigateLightbox(1);
+      });
+    });
+
+    // Header/Footer & AOS
+    (async function(){
+      const h = await fetch('header.html').then(r=>r.text());
+      document.getElementById('header-container').innerHTML = h;
+      if(window.initHeader) window.initHeader();
+      if(window.updateCartIcon) window.updateCartIcon();
+      const f = await fetch('footer.html').then(r=>r.text());
+      document.getElementById('footer-container').innerHTML = f;
+      AOS.init({duration:800,offset:100,once:true,disable:'mobile'});
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Условия обработки персональных данных — AluLuxe</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+  <main class="section">
+    <h1>Условия обработки персональных данных</h1>
+    <p>Ваши персональные данные используются исключительно для обработки и выполнения заказа. Мы не передаём их третьим лицам без вашего согласия и храните в защищённом виде. Подробнее:</p>
+    <ul>
+      <li>Сбор и хранение: только имя, телефон, адрес, email.</li>
+      <li>Срок хранения: до выполнения заказа + 1 год для статистики.</li>
+      <li>Права: вы можете запросить удаление или изменение данных в любой момент — пишите нам на info@AluLuxe.ru.</li>
+    </ul>
+  </main>
+  <div id="footer-container"></div>
+  <script>
+    (async function(){
+      const h=await fetch('header.html').then(r=>r.text());document.getElementById('header-container').innerHTML=h;
+      if(window.initHeader) window.initHeader();
+      const f=await fetch('footer.html').then(r=>r.text());document.getElementById('footer-container').innerHTML=f;
+    })();
+  </script>
+</body>
+</html>

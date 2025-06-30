@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Политика конфиденциальности — AluLuxe</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="header-container"></div>
+  <main class="section">
+    <h1>Политика конфиденциальности</h1>
+    <p>Мы уважаем вашу приватность. Наша политика конфиденциальности включает:</p>
+    <ul>
+      <li>Какие данные мы собираем и зачем.</li>
+      <li>Как мы защищаем информацию.</li>
+      <li>Ваши права на доступ, исправление и удаление данных.</li>
+    </ul>
+    <p>Для любых вопросов свяжитесь с нами: info@AluLuxe.ru</p>
+  </main>
+  <div id="footer-container"></div>
+  <script>
+    (async function(){
+      const h=await fetch('header.html').then(r=>r.text());document.getElementById('header-container').innerHTML=h;
+      if(window.initHeader) window.initHeader();
+      const f=await fetch('footer.html').then(r=>r.text());document.getElementById('footer-container').innerHTML=f;
+    })();
+  </script>
+</body>
+</html>

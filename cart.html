@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ваша корзина - AluLuxe</title>
+  <meta name="description" content="Просмотрите товары в вашей корзине и оформите заказ на премиальную уличную мебель AluLuxe.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos @next/dist/aos.css">
+</head>
+<body>
+
+  <div id="header-container"></div>
+
+  <main>
+    <section class="cart-page-section section">
+      <h1 class="section-title">Ваша корзина</h1>
+
+      <!-- Товары -->
+      <div id="cart-container" class="cart-items"></div>
+
+      <!-- Итоговая сумма и действия -->
+      <div id="cart-summary" class="cart-summary"></div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <!-- Скрипты -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js "></script>
+  <script src="global.js"></script>
+  <script src="cart.js"></script>
+  <script src="https://unpkg.com/aos @next/dist/aos.js"></script>
+
+  <!-- Шаблон для пустой корзины -->
+  <template id="empty-cart-template">
+    <div class="empty-cart-message">
+      <p>Ваша корзина пуста.</p>
+      <a href="index.html#catalog" class="btn btn-primary">Перейти к покупкам</a>
+    </div>
+  </template>
+
+  <!-- Инициализация -->
+  <script>
+    async function fetchHeaderFooter() {
+      try {
+        const header = await fetch('header.html').then(r => r.text());
+        document.getElementById('header-container').innerHTML = header;
+        if (window.initHeader) window.initHeader();
+        if (window.updateCartIcon) window.updateCartIcon();
+
+        const footer = await fetch('footer.html').then(r => r.text());
+        document.getElementById('footer-container').innerHTML = footer;
+
+        AOS.init({ duration: 800, offset: 100, once: true, disable: 'mobile' });
+
+        if (window.initCartPage) window.initCartPage();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    fetchHeaderFooter();
+  </script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Оформление заказа - AluLuxe</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/aos @next/dist/aos.css"/>
+</head>
+<body>
+<div id="header-container"></div>
+<main>
+  <section class="checkout-page-section section">
+    <h1 class="section-title">Оформление заказа</h1>
+    <div class="checkout-container">
+      <!-- Таблица товаров -->
+      <table class="checkout-order-table" id="checkout-order-table"></table>
+      <div class="checkout-grand-total">
+        Итого к оплате: &nbsp; <span id="checkout-grand-total-amount">0 руб.</span>
+      </div>
+      <button class="spoiler-btn" onclick="toggleSpoiler()">Рассчитать доставку СДЭК</button>
+      <div class="spoiler-content" id="sdekCalc">
+        <iframe 
+          id="sdek_calc_iframe" 
+          src="https://kit.cdek-calc.ru/calc.php?oplata=1&amp ;city_from=9220&amp;tarifs=483,482&amp;markup=500" 
+          scrolling="no" 
+          frameborder="0"
+        ></iframe>
+      </div>
+      <!-- Форма оформления заказа -->
+      <div class="checkout-form-fields">
+        <form id="checkout-form" action="contact-form-handler.php" method="post" novalidate>
+          <input type="hidden" name="cart_html" id="cart_html">
+          <input type="hidden" name="cart_json" id="cart_json">
+          <input type="hidden" name="order_total" id="order_total">
+          <input type="hidden" name="delivery_cost" id="delivery_cost" value="0">
+          <input type="hidden" name="honeypot" value="">
+          <div class="form-group">
+            <label for="name">Имя <span style="color:red;">*</span></label>
+            <input type="text" id="name" name="name" required>
+            <div class="input-error" hidden>Введите имя</div>
+          </div>
+          <div class="form-group">
+            <label for="phone">Телефон <span style="color:red;">*</span></label>
+            <input type="tel" id="phone" name="phone" required>
+            <div class="input-error" hidden>Неверный номер телефона</div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+            <div class="input-error" hidden>Неверный email</div>
+          </div>
+          <div class="form-group">
+            <label for="delivery">Способ доставки <span style="color:red;">*</span></label>
+            <select name="delivery" id="delivery" required>
+              <option value="">-- Выберите --</option>
+              <option value="moscow" data-price="500">По Москве – 500 руб.</option>
+              <option value="mo_10km" data-price="800">До 10 км – 800 руб.</option>
+              <option value="mo_30km" data-price="1500">До 30 км – 1500 руб.</option>
+              <option value="sdek" data-price="0">СДЭК – расчет при звонке</option>
+            </select>
+            <div class="input-error" hidden>Выберите способ доставки</div>
+          </div>
+          <div class="form-group">
+            <label for="address">Адрес <span style="color:red;">*</span></label>
+            <input type="text" id="address" name="address" required>
+            <div class="input-error" hidden>Укажите адрес</div>
+          </div>
+          <div class="form-group">
+            <label for="comment">Комментарий</label>
+            <textarea id="comment" name="comment" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Подтвердить заказ</button>
+          <p class="form-note">
+            Нажимая «Подтвердить заказ», вы соглашаетесь с
+            <a href="policy.html" target="_blank">условиями обработки</a> и
+            <a href="confidentiality.html" target="_blank">политикой конфиденциальности</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="footer-container"></div>
+
+<!-- Подключаем библиотеки -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js "></script>
+<script src="global.js"></script>
+<script src="cart.js"></script>
+<script src="https://unpkg.com/aos @next/dist/aos.js"></script>
+<script src="https://unpkg.com/imask "></script>
+<script>
+function toggleSpoiler() {
+  const spoiler = document.getElementById('sdekCalc');
+  spoiler.classList.toggle('active');
+}
+
+async function fetchHeaderFooter() {
+  try {
+    const h = await fetch('header.html').then(r => r.text());
+    document.getElementById('header-container').innerHTML = h;
+    if (window.initHeader) window.initHeader();
+    if (window.updateCartIcon) window.updateCartIcon();
+    const f = await fetch('footer.html').then(r => r.text());
+    document.getElementById('footer-container').innerHTML = f;
+    AOS.init({
+      duration: 800,
+      offset: 100,
+      once: true,
+      disable: 'mobile'
+    });
+  } catch (error) {
+    console.error('Ошибка загрузки header/footer:', error);
+  }
+}
+
+function updateOrderTotal() {
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  let subtotal = 0;
+  cart.forEach(item => subtotal += item.price * item.quantity);
+  const delivery = document.getElementById('delivery');
+  const selected = delivery.options[delivery.selectedIndex];
+  const deliveryCost = selected.dataset.price ? parseInt(selected.dataset.price, 10) : 0;
+  document.getElementById('delivery_cost').value = deliveryCost;
+  const total = subtotal + deliveryCost;
+  document.getElementById('checkout-grand-total-amount').textContent = `${total.toLocaleString()} руб.`;
+  document.getElementById('order_total').value = total;
+}
+
+function initCheckoutForm() {
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  if (cart.length === 0) {
+    window.location.href = 'cart.html';
+    return;
+  }
+  const table = document.getElementById('checkout-order-table');
+  let total = 0;
+  let html = `
+  <thead>
+    <tr>
+      <th>Товар</th>
+      <th>Кол-во</th>
+      <th>Цвет</th>
+      <th>Сумма</th>
+    </tr>
+  </thead>
+  <tbody>
+  `;
+  cart.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
+    // Цвет: RAL или "на заказ"
+    const color = item.color ? (item.color === 'custom' ? 'на заказ' : `RAL ${item.color}`) : 'без цвета';
+    html += `
+    <tr>
+      <td>${item.name} (${color})</td>
+      <td>${item.quantity}</td>
+      <td>${color}</td>
+      <td>${itemTotal.toLocaleString()} руб.</td>
+    </tr>`;
+  });
+  html += `
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3"><strong>Итого:</strong></td>
+      <td><strong>${total.toLocaleString()} руб.</strong></td>
+    </tr>
+  </tfoot>
+  </table>
+  `;
+  document.getElementById('checkout-order-table').innerHTML = html;
+  document.getElementById('cart_json').value = JSON.stringify(cart);
+  document.getElementById('order_total').value = total;
+  document.getElementById('checkout-grand-total-amount').textContent = `${total.toLocaleString()} руб.`;
+}
+
+function validateForm() {
+  let isValid = true;
+  document.querySelectorAll('.form-group').forEach(group => {
+    const input = group.querySelector('input, select, textarea');
+    const errorEl = group.querySelector('.input-error');
+    if (!input) return;
+    input.classList.remove('invalid');
+    if (errorEl) errorEl.hidden = true;
+    if (input.required && !input.value.trim()) {
+      if (errorEl) {
+        errorEl.textContent = 'Поле обязательно';
+        errorEl.hidden = false;
+      }
+      input.classList.add('invalid');
+      isValid = false;
+    }
+    if (input.type === 'email' && input.value && !/^[\w\.-]+@[\w\.-]+\.\w{2,}$/.test(input.value)) {
+      if (errorEl) {
+        errorEl.textContent = 'Неверный email';
+        errorEl.hidden = false;
+      }
+      input.classList.add('invalid');
+      isValid = false;
+    }
+    if (input.id === 'phone' && !/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/.test(input.value)) {
+      if (errorEl) {
+        errorEl.textContent = 'Неверный номер телефона';
+        errorEl.hidden = false;
+      }
+      input.classList.add('invalid');
+      isValid = false;
+    }
+    input.addEventListener('input', () => {
+      input.classList.remove('invalid');
+      if (errorEl) errorEl.hidden = true;
+    });
+  });
+  return isValid;
+}
+
+// Инициализация страницы
+document.addEventListener('DOMContentLoaded', () => {
+  fetchHeaderFooter();
+  initCheckoutForm();
+  IMask(document.getElementById('phone'), {
+    mask: '+7 (000) 000-00-00'
+  });
+  document.getElementById('delivery').addEventListener('change', updateOrderTotal);
+  document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    if (!validateForm()) {
+      e.preventDefault();
+      return false;
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Включить обработку PHP
+AddHandler application/x-httpd-php .php
+AddType application/x-httpd-php .php
+
+# Включить отображение ошибок (для отладки, можно потом убрать)
+php_flag display_errors On
+php_value error_reporting 32767
+
+# Опционально — задать кодировку
+AddDefaultCharset UTF-8
+
+<Files "config.php">
+  Order Allow,Deny
+  Deny from all
+</Files>
